@@ -1,0 +1,351 @@
+{
+  "entities": {
+    "Farm": {
+      "title": "Farm",
+      "description": "Represents a farm unit.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name"]
+    },
+    "Location": {
+      "title": "Location",
+      "description": "Functional areas within a farm.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "farm_id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "enum": ["aviary", "barn", "silo", "pasture", "warehouse"] },
+        "capacity": { "type": "number" },
+        "status": { "type": "string" }
+      },
+      "required": ["farm_id", "name", "type"]
+    },
+    "ChickenLot": {
+      "title": "Chicken Lot",
+      "description": "A group of chickens for production.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "lot_name": { "type": "string" },
+        "type": { "enum": ["layer", "broiler"] },
+        "breed": { "type": "string" },
+        "entry_date": { "type": "string", "format": "date-time" },
+        "initial_quantity": { "type": "number" },
+        "current_quantity": { "type": "number" },
+        "age_days": { "type": "number" },
+        "location_id": { "type": "string" },
+        "status": { "type": "string" },
+        "feed_efficiency": { "type": "number" },
+        "cumulative_mortality": { "type": "number" }
+      },
+      "required": ["lot_name", "type", "initial_quantity", "location_id"]
+    },
+    "EggProduction": {
+      "title": "Egg Production",
+      "description": "Daily egg production records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "lot_id": { "type": "string" },
+        "total_eggs": { "type": "number" },
+        "good_eggs": { "type": "number" },
+        "broken_eggs": { "type": "number" },
+        "average_egg_weight": { "type": "number" },
+        "mortality": { "type": "number" },
+        "feed_consumed": { "type": "number" },
+        "water_consumed": { "type": "number" },
+        "notes": { "type": "string" },
+        "created_by": { "type": "string" },
+        "egg_quality_rate": { "type": "number" },
+        "eggs_per_chicken": { "type": "number" },
+        "hdep": { "type": "number" },
+        "mortality_rate": { "type": "number" }
+      },
+      "required": ["date", "lot_id", "total_eggs"]
+    },
+    "Animal": {
+      "title": "Animal",
+      "description": "Individual ruminant record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tag_number": { "type": "string" },
+        "animal_type": { "enum": ["cow", "goat", "sheep"] },
+        "breed": { "type": "string" },
+        "sex": { "enum": ["male", "female"] },
+        "birth_date": { "type": "string", "format": "date-time" },
+        "weight": { "type": "number" },
+        "status": { "type": "string" },
+        "location_id": { "type": "string" }
+      },
+      "required": ["tag_number", "animal_type", "sex"]
+    },
+    "AnimalWeight": {
+      "title": "Animal Weight",
+      "description": "Weight tracking for ruminants.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "weight": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["animal_id", "date", "weight"]
+    },
+    "PoultryWeightRecord": {
+      "title": "Poultry Weight Record",
+      "description": "Weight and performance tracking for poultry lots.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "lot_id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "average_weight": { "type": "number" },
+        "sample_size": { "type": "number" },
+        "mortality": { "type": "number" },
+        "feed_consumed": { "type": "number" },
+        "water_consumed": { "type": "number" },
+        "notes": { "type": "string" },
+        "created_by": { "type": "string" },
+        "fcr": { "type": "number" },
+        "weight_gain": { "type": "number" }
+      },
+      "required": ["lot_id", "date", "average_weight"]
+    },
+    "Reproduction": {
+      "title": "Reproduction",
+      "description": "Breeding and birth records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "breeding_date": { "type": "string", "format": "date-time" },
+        "expected_birth_date": { "type": "string", "format": "date-time" },
+        "birth_date": { "type": "string", "format": "date-time" },
+        "offspring_count": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["animal_id", "breeding_date"]
+    },
+    "LactationCycle": {
+      "title": "Lactation Cycle",
+      "description": "Milk production phases for female animals.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "start_date": { "type": "string", "format": "date-time" },
+        "end_date": { "type": "string", "format": "date-time" },
+        "status": { "enum": ["active", "closed"] }
+      },
+      "required": ["animal_id", "start_date", "status"]
+    },
+    "MilkProduction": {
+      "title": "Milk Production",
+      "description": "Daily milk production records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "lactation_id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "liters": { "type": "number" },
+        "milking_shift": { "enum": ["morning", "evening"] },
+        "created_by": { "type": "string" }
+      },
+      "required": ["animal_id", "lactation_id", "date", "liters"]
+    },
+    "Feed": {
+      "title": "Feed",
+      "description": "Inventory of feed types.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "protein_percentage": { "type": "number" },
+        "unit": { "type": "string" },
+        "cost_per_unit": { "type": "number" }
+      },
+      "required": ["name", "unit"]
+    },
+    "Silo": {
+      "title": "Silo",
+      "description": "Feed storage containers.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "location_id": { "type": "string" },
+        "capacity_kg": { "type": "number" },
+        "current_stock": { "type": "number" },
+        "daily_consumption_average": { "type": "number" },
+        "remaining_feed_days": { "type": "number" }
+      },
+      "required": ["name", "capacity_kg"]
+    },
+    "FeedStockMovement": {
+      "title": "Feed Stock Movement",
+      "description": "Records of silo refilling or emptying.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "silo_id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "movement_type": { "enum": ["in", "out"] },
+        "quantity": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["silo_id", "date", "movement_type", "quantity"]
+    },
+    "FeedConsumption": {
+      "title": "Feed Consumption",
+      "description": "Animals/lots consuming feed.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "feed_id": { "type": "string" },
+        "silo_id": { "type": "string" },
+        "lot_id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "quantity": { "type": "number" },
+        "created_by": { "type": "string" }
+      },
+      "required": ["date", "feed_id", "quantity"]
+    },
+    "Inventory": {
+      "title": "Inventory Item",
+      "description": "General stock items.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "item_name": { "type": "string" },
+        "category": { "type": "string" },
+        "quantity": { "type": "number" },
+        "minimum_quantity": { "type": "number" },
+        "unit": { "type": "string" },
+        "location_id": { "type": "string" },
+        "supplier": { "type": "string" },
+        "cost": { "type": "number" }
+      },
+      "required": ["item_name", "quantity", "unit"]
+    },
+    "Vaccination": {
+      "title": "Vaccination Record",
+      "description": "Animal immunization logs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "vaccine_name": { "type": "string" },
+        "date_given": { "type": "string", "format": "date-time" },
+        "next_due_date": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      },
+      "required": ["animal_id", "vaccine_name", "date_given"]
+    },
+    "Cost": {
+      "title": "Operational Cost",
+      "description": "Expensing records.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "category": { "enum": ["feed", "labor", "electricity", "veterinary", "maintenance"] },
+        "amount": { "type": "number" },
+        "related_lot_id": { "type": "string" },
+        "related_animal_id": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["date", "category", "amount"]
+    },
+    "Sale": {
+      "title": "Product Sale",
+      "description": "Revenue generated from farm products.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "product_type": { "enum": ["eggs", "milk", "animals", "feed"] },
+        "quantity": { "type": "number" },
+        "unit_price": { "type": "number" },
+        "total_amount": { "type": "number" },
+        "customer": { "type": "string" }
+      },
+      "required": ["date", "product_type", "total_amount"]
+    },
+    "HealthRecord": {
+      "title": "Health Record",
+      "description": "Veterinary clinical logs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "service": { "type": "string" },
+        "provider": { "type": "string" },
+        "status": { "enum": ["pending", "completed"] },
+        "notes": { "type": "string" },
+        "created_by": { "type": "string" },
+        "animal_id": { "type": "string" },
+        "lot_id": { "type": "string" }
+      },
+      "required": ["date", "service", "status"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Extended user data and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "enum": ["Admin", "Farm Manager", "Veterinarian", "Operator", "Director"] },
+        "farm_id": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "EggInventory": {
+      "title": "Egg Inventory",
+      "description": "Central egg stock tracking.",
+      "type": "object",
+      "properties": {
+        "total_stock": { "type": "number" },
+        "last_updated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["total_stock"]
+    }
+  },
+  "firestore": {
+    "farms": { "schema": "Farm", "description": "List of farms" },
+    "locations": { "schema": "Location", "description": "Farm locations/areas" },
+    "chicken_lots": { "schema": "ChickenLot", "description": "Poultry lots" },
+    "egg_productions": { "schema": "EggProduction", "description": "Daily egg production" },
+    "weight_records": { "schema": "PoultryWeightRecord", "description": "Poultry weight logs" },
+    "animals": { "schema": "Animal", "description": "Ruminant animals" },
+    "animal_weights": { "schema": "AnimalWeight", "description": "Weight history" },
+    "reproductions": { "schema": "Reproduction", "description": "Animal reproduction" },
+    "lactation_cycles": { "schema": "LactationCycle", "description": "Lactation periods" },
+    "milk_productions": { "schema": "MilkProduction", "description": "Daily milk logs" },
+    "feeds": { "schema": "Feed", "description": "Feed varieties" },
+    "silos": { "schema": "Silo", "description": "Silo inventories" },
+    "stock_movements": { "schema": "FeedStockMovement", "description": "Silo stocking" },
+    "feed_consumptions": { "schema": "FeedConsumption", "description": "Feed usage" },
+    "inventories": { "schema": "Inventory", "description": "General inventory" },
+    "health_records": { "schema": "HealthRecord", "description": "Animal health logs" },
+    "vaccinations": { "schema": "Vaccination", "description": "Vaccination history" },
+    "costs": { "schema": "Cost", "description": "Expense records" },
+    "sales": { "schema": "Sale", "description": "Revenue records" },
+    "profiles": { "schema": "UserProfile", "description": "User roles and association" },
+    "egg_inventory": { "schema": "EggInventory", "description": "Global egg stock" }
+  }
+}
